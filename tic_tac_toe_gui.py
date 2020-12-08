@@ -1,10 +1,13 @@
+#################################################################################
 # Tic Tac Toe GUI 
 # Created with PyQT5
 # To run this GUI, ensure all modules in requirements.txt are installed with pip
 # For WSL, X11 Display Server needs to be configured with correct display port
+#################################################################################
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PIL import Image
+from csv import reader
 import sys
 
 class images(object):
@@ -28,19 +31,7 @@ class Ui_window(object):
         window.resize(306, 398)
         window.setToolTipDuration(-2)
         # Set up buttons for Tic Tac Toe
-        for index in range(0, 10):
-            exec(f"self.pushButton_{index} = QtWidgets.QPushButton(window)")
-            exec(f"self.pushButton_{index}.setObjectName('pushButton_{index}')")
-        self.pushButton_0.setGeometry(QtCore.QRect(20, 20, 85, 85))
-        self.pushButton_1.setGeometry(QtCore.QRect(110, 20, 85, 85))
-        self.pushButton_2.setGeometry(QtCore.QRect(200, 20, 85, 85))
-        self.pushButton_3.setGeometry(QtCore.QRect(20, 110, 85, 85))
-        self.pushButton_4.setGeometry(QtCore.QRect(110, 110, 85, 85))
-        self.pushButton_5.setGeometry(QtCore.QRect(200, 110, 85, 85))
-        self.pushButton_6.setGeometry(QtCore.QRect(20, 200, 85, 85))
-        self.pushButton_7.setGeometry(QtCore.QRect(110, 200, 85, 85))
-        self.pushButton_8.setGeometry(QtCore.QRect(200, 200, 85, 85))
-        self.pushButton_9.setGeometry(QtCore.QRect(20, 300, 265, 23))
+        self.set_dimensions()
         # Create label for display game status
         self.label = QtWidgets.QLabel(window)
         self.label.setGeometry(QtCore.QRect(110, 330, 81, 16))
@@ -53,6 +44,21 @@ class Ui_window(object):
         # update label and window descriptions
         self.retranslateUi(window)
         QtCore.QMetaObject.connectSlotsByName(window)
+
+    def set_dimensions(self):
+        ''' Recursively reads csv file for dimensions. Sets the board buttons 
+        accordingly 
+        ''' 
+        dim_file = open("dimensions.csv")
+        csv_data = reader(dim_file, delimiter=',')
+        next(csv_data)
+        for index in range(0, 10):
+            temp = list(next(csv_data))
+            exec(f"self.pushButton_{index} = QtWidgets.QPushButton(window)")
+            exec(f"self.pushButton_{index}.setObjectName('pushButton_{index}')")
+            exec(f'''self.pushButton_{index}.setGeometry(\
+                QtCore.QRect({temp[0]}, {temp[1]}, {temp[2]}, {temp[3]}))''')
+        dim_file.close()
 
     def retranslateUi(self, window):
         ''' Updates the starting state/description of buttons and window '''
