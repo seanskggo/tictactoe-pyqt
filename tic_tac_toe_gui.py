@@ -14,6 +14,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PIL import Image
 from csv import reader
+from minimax_algorithm import minimax
 import sys
 
 #################################################################################
@@ -95,7 +96,9 @@ class Ui_window(object):
             exec(f"self.pushButton_{index} = QtWidgets.QPushButton(window)")
             exec(f"self.pushButton_{index}.setObjectName('pushButton_{index}')")
             exec(f'''self.pushButton_{index}.setGeometry(\
-                QtCore.QRect({temp[0]}, {temp[1]}, {temp[2]}, {temp[3]}))''')        
+                QtCore.QRect({temp[0]}, {temp[1]}, {temp[2]}, {temp[3]}))''') 
+        # Creating click conditions had to be done individually since lambda was used
+        # with self -> minimises unexpected behaviour
         self.pushButton_0.clicked.connect(lambda: self.clicked(0))
         self.pushButton_1.clicked.connect(lambda: self.clicked(1))
         self.pushButton_2.clicked.connect(lambda: self.clicked(2))
@@ -170,6 +173,13 @@ class Ui_window(object):
         self.pushButton_9.setText(_translate("window", "Reset"))
         self.label.setText(_translate("window", "Game Status"))
         self.plainTextEdit.setPlainText(_translate("window", progress))
+    
+    def show_game_state():
+        ''' Returns the current game state: Used for 
+        sending state to other files 
+        ''' 
+        return game_state
+
 
 #################################################################################
 # Main
