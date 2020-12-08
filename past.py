@@ -53,3 +53,6 @@ if __name__ == "__main__":
     ui.setupUi(window)
     window.show()
     sys.exit(app.exec_())
+
+# So basiclaly, can make it on push and then change the background or change the backgourd
+# immediately manually

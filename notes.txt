@@ -1,0 +1,10 @@
+            eval(f"self.pushButton_{index}").clicked.connect(lambda: self.clicked(index))
+            # a = eval(f"self.pushButton_{index}.clicked.connect(lambda: self.clicked({index}))")
+        for index in range(0, 10):
+            
+        
+        
+        # x = lambda: self.clicked(0)
+        # yeet = eval('self.pushButton_0')
+        # # exec(f"yeet = self.pushButton_0")
+        # yeet.clicked.connect(x)
