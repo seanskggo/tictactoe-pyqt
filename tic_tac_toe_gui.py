@@ -28,6 +28,16 @@ game_state = [
     None, None, None,
     None, None, None
 ]
+end_game_state = [
+    2, 2, 2,
+    2, 2, 2,
+    2, 2, 2
+]
+# Game outcome strings
+progress = "Game in progress..."
+p1_won = "Player 1 won!"
+p2_won = "Player 2 won!"
+draw = "It's a draw..."
 
 #################################################################################
 # Classes
@@ -111,7 +121,34 @@ class Ui_window(object):
         else:
             exec(f'self.pushButton_{index}.setStyleSheet("background-image : url(cross.png);")')
         game_state[index] = p1_turn
+        self.check_outcome()
         p1_turn = True if p1_turn is False else False
+
+    def check_outcome(self):
+        ''' Check if the game state is drawn or won by a player '''
+        global game_state
+        _translate = QtCore.QCoreApplication.translate
+        if game_state.count(None) == 0:
+            self.plainTextEdit.setPlainText(_translate("window", draw))
+        # Conditions to determine a win/loss
+        condition = [
+            (game_state[0], game_state[1], game_state[2]),
+            (game_state[3], game_state[4], game_state[5]),
+            (game_state[6], game_state[7], game_state[8]),
+            (game_state[0], game_state[3], game_state[6]),
+            (game_state[1], game_state[4], game_state[7]),
+            (game_state[2], game_state[5], game_state[8]),
+            (game_state[0], game_state[4], game_state[8]),
+            (game_state[2], game_state[4], game_state[6])
+        ]
+        # Check using the conditions
+        for check in condition:
+            if check == (True, True, True):
+                self.plainTextEdit.setPlainText(_translate("window", p1_won))
+                game_state = end_game_state
+            elif check == (False, False, False):
+                self.plainTextEdit.setPlainText(_translate("window", p2_won))
+                game_state = end_game_state
 
     def reset(self):
         ''' Resets the game board '''
@@ -123,6 +160,8 @@ class Ui_window(object):
         ]
         for index in range(0, 10):
             exec(f'self.pushButton_{index}.setStyleSheet("")')
+        _translate = QtCore.QCoreApplication.translate
+        self.plainTextEdit.setPlainText(_translate("window", progress))
 
     def retranslateUi(self, window):
         ''' Updates the starting state/description of buttons and window '''
@@ -130,7 +169,7 @@ class Ui_window(object):
         window.setWindowTitle(_translate("window", "Tic Tac Toe"))
         self.pushButton_9.setText(_translate("window", "Reset"))
         self.label.setText(_translate("window", "Game Status"))
-        self.plainTextEdit.setPlainText(_translate("window", "Game in progress..."))
+        self.plainTextEdit.setPlainText(_translate("window", progress))
 
 #################################################################################
 # Main
