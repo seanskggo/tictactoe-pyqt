@@ -52,7 +52,7 @@ class Ui_window(object):
         images.compress(self, 'circle.png')
         # Set up window
         window.setObjectName("window")
-        window.resize(306, 398)
+        window.resize(306, 423)
         window.setToolTipDuration(-2)
         # Set up display state for Tic Tac Toe
         self.set_dimensions()
@@ -80,7 +80,7 @@ class Ui_window(object):
         dim_file = open("dimensions.csv")
         csv_data = reader(dim_file, delimiter=',')
         next(csv_data)
-        for index in range(0, 10):
+        for index in range(0, 11):
             temp = list(next(csv_data))
             exec(f"self.pushButton_{index} = QtWidgets.QPushButton(window)")
             exec(f"self.pushButton_{index}.setObjectName('pushButton_{index}')")
@@ -100,6 +100,7 @@ class Ui_window(object):
         self.pushButton_7.clicked.connect(lambda: self.clicked(7, True))
         self.pushButton_8.clicked.connect(lambda: self.clicked(8, True))
         self.pushButton_9.clicked.connect(self.reset)
+        self.pushButton_10.clicked.connect(self.AI_turn)
         dim_file.close()
 
     def clicked(self, index, ai):
@@ -129,7 +130,7 @@ class Ui_window(object):
 
     def check_outcome(self):
         ''' Check if the game state is drawn or won by a player '''
-        global game_state, p1_turn
+        global game_state
         _translate = QtCore.QCoreApplication.translate
         # Conditions to determine a win/loss: hard coding is more concise with 3x3
         condition = [
@@ -146,20 +147,19 @@ class Ui_window(object):
         for check in condition:
             if check == (True, True, True):
                 self.plainTextEdit.setPlainText(_translate("window", p1_won))
-                game_state, p1_turn = end_game_state, True
+                game_state = end_game_state
                 return
             elif check == (False, False, False):
                 self.plainTextEdit.setPlainText(_translate("window", p2_won))
-                game_state, p1_turn = end_game_state, True
+                game_state = end_game_state
                 return
         if game_state.count(None) == 0:
             self.plainTextEdit.setPlainText(_translate("window", draw))
             game_state = end_game_state
-            p1_turn = True
 
     def reset(self):
         ''' Resets the game board '''
-        global game_state
+        global game_state, p1_turn
         game_state = [
             None, None, None, 
             None, None, None,
@@ -169,12 +169,14 @@ class Ui_window(object):
             exec(f'self.pushButton_{index}.setStyleSheet("")')
         _translate = QtCore.QCoreApplication.translate
         self.plainTextEdit.setPlainText(_translate("window", progress))
+        p1_turn = True
 
     def retranslateUi(self, window):
         ''' Updates the starting state/description of buttons and window '''
         _translate = QtCore.QCoreApplication.translate
         window.setWindowTitle(_translate("window", "Tic Tac Toe"))
         self.pushButton_9.setText(_translate("window", "Reset"))
+        self.pushButton_10.setText(_translate("window", "Make AI move"))
         self.label.setText(_translate("window", "Game Status"))
         self.plainTextEdit.setPlainText(_translate("window", progress))
 

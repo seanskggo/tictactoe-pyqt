@@ -6,32 +6,43 @@
 #################################################################################
 
 #################################################################################
+# Globals
+#################################################################################
+
+state_count = 0
+
+#################################################################################
 # Functions
 #################################################################################
 
 def best_move(game_state, player):
     ''' utilises the minimax algorithm to find the best move for bot. 
-    This function returns the index number of the square to be played
-    after calculating the best move
+    Given the current game state and the player whom must make a turn,
+    this function returns the index number of the best move
     ''' 
-    print("-----------NEW MOVE--------------------")
-    best_value, best_index = 1, None
-    # Check whose turn it is from game board
+    global state_count
+    best_value, best_index = (-1 if player else 1), None
     for index, spot in enumerate(game_state):
         if spot is None:
+            state_count += 1
+            # For each empty spot. check if the state is optimal
             copy_state = game_state.copy()
             copy_state[index] = player
-            value = minimax(copy_state, player)
-            print(value)
-            print_game(copy_state)
-            if value < best_value:
+            value = minimax(copy_state, (not player))
+            if value < best_value and (not player):
                 best_value, best_index = value, index
+            elif value > best_value and player:
+                best_value, best_index = value, index
+    print(f"Calculated {state_count} possibilites in this move")
+    state_count = 0
     return best_index
 
 def minimax(game_state, is_maximising):
     ''' Deploys minimax algorithm. Returns 1 if the game state is winning,
     -1 if losing or 0 if drawing
     ''' 
+    global state_count
+    state_count += 1
     # If the game condition has ended, return appropriate value
     result = check_if_end(game_state)
     if result is not None:
@@ -43,8 +54,9 @@ def minimax(game_state, is_maximising):
         best_value = -1
         for index, spot in enumerate(game_state):
             if spot is None:
+                state_count += 1
                 copy_state = game_state.copy()
-                copy_state[index] = (not is_maximising)
+                copy_state[index] = is_maximising
                 value = minimax(copy_state, (not is_maximising))
                 best_value = max(best_value, value)
     # If minimiser's move:
@@ -52,8 +64,9 @@ def minimax(game_state, is_maximising):
         best_value = 1
         for index, spot in enumerate(game_state):
             if spot is None:
+                state_count += 1
                 copy_state = game_state.copy()
-                copy_state[index] = (not is_maximising)
+                copy_state[index] = is_maximising
                 value = minimax(copy_state, (not is_maximising))
                 best_value = min(best_value, value)
     return best_value
@@ -85,31 +98,3 @@ def check_if_end(game_state):
         return 0
     else: 
         return None
-
-
-
-
-
-
-
-
-
-
-
-def print_game(yeet):
-    game_state = yeet.copy()
-    for index, i in enumerate(game_state):
-        if i is True:
-            game_state[index] = 'O'
-        elif i is False:
-            game_state[index] = 'X'
-        else:
-            game_state[index] = ' '
-    print("-----------")
-    print(" " + " | ".join(game_state[0:3]))
-    print("-----------")
-    print(" " + " | ".join(game_state[3:6]))
-    print("-----------")
-    print(" " + " | ".join(game_state[6:9]))
-    print("-----------")
-    print("")
