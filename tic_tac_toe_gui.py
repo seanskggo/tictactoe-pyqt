@@ -14,7 +14,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PIL import Image
 from csv import reader
-from minimax_algorithm import minimax
+from minimax_algorithm import best_move
 import sys
 
 #################################################################################
@@ -122,7 +122,10 @@ class Ui_window(object):
 
     def AI_turn(self):
         ''' Generate and play move from tic tac toe AI'''
-        self.clicked(minimax(game_state), False)
+        # If game state is terminal, simply return
+        if game_state.count(2) > 0:
+            return
+        self.clicked(best_move(game_state, p1_turn), False)
 
     def check_outcome(self):
         ''' Check if the game state is drawn or won by a player '''
