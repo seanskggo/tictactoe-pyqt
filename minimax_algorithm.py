@@ -36,11 +36,6 @@ def minimax(game_state, is_maximising):
     # Else, recursively loop to find game state value (1,0,-1) for 
     # all possible game states using minimax algorithm
     # If maximiser's move:
-    # print(game_state[0:3])
-    # print(game_state[3:6])
-    # print(game_state[6:9])
-    # print("")
-    # print(is_maximising)
     if is_maximising:
         best_value = -1
         for index, spot in enumerate(game_state):
@@ -87,3 +82,31 @@ def check_if_end(game_state):
         return 0
     else: 
         return None
+
+
+
+
+
+
+
+
+
+
+
+def print_game(yeet):
+    game_state = yeet.copy()
+    for index, i in enumerate(game_state):
+        if i is True:
+            game_state[index] = 'O'
+        elif i is False:
+            game_state[index] = 'X'
+        else:
+            game_state[index] = ' '
+    print("-----------")
+    print(" " + " | ".join(game_state[0:3]))
+    print("-----------")
+    print(" " + " | ".join(game_state[3:6]))
+    print("-----------")
+    print(" " + " | ".join(game_state[6:9]))
+    print("-----------")
+    print("")

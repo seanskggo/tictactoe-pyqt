@@ -133,6 +133,7 @@ class Ui_window(object):
         _translate = QtCore.QCoreApplication.translate
         if game_state.count(None) == 0:
             self.plainTextEdit.setPlainText(_translate("window", draw))
+            game_state = end_game_state
         # Conditions to determine a win/loss: hard coding is more concise with 3x3
         condition = [
             (game_state[0], game_state[1], game_state[2]),
