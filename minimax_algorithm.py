@@ -14,14 +14,17 @@ def best_move(game_state, player):
     This function returns the index number of the square to be played
     after calculating the best move
     ''' 
-    best_value, best_index = -1, None
+    print("-----------NEW MOVE--------------------")
+    best_value, best_index = 1, None
     # Check whose turn it is from game board
     for index, spot in enumerate(game_state):
         if spot is None:
             copy_state = game_state.copy()
             copy_state[index] = player
             value = minimax(copy_state, player)
-            if value > best_value:
+            print(value)
+            print_game(copy_state)
+            if value < best_value:
                 best_value, best_index = value, index
     return best_index
 

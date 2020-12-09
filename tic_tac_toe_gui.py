@@ -129,11 +129,8 @@ class Ui_window(object):
 
     def check_outcome(self):
         ''' Check if the game state is drawn or won by a player '''
-        global game_state
+        global game_state, p1_turn
         _translate = QtCore.QCoreApplication.translate
-        if game_state.count(None) == 0:
-            self.plainTextEdit.setPlainText(_translate("window", draw))
-            game_state = end_game_state
         # Conditions to determine a win/loss: hard coding is more concise with 3x3
         condition = [
             (game_state[0], game_state[1], game_state[2]),
@@ -149,10 +146,16 @@ class Ui_window(object):
         for check in condition:
             if check == (True, True, True):
                 self.plainTextEdit.setPlainText(_translate("window", p1_won))
-                game_state = end_game_state
+                game_state, p1_turn = end_game_state, True
+                return
             elif check == (False, False, False):
                 self.plainTextEdit.setPlainText(_translate("window", p2_won))
-                game_state = end_game_state
+                game_state, p1_turn = end_game_state, True
+                return
+        if game_state.count(None) == 0:
+            self.plainTextEdit.setPlainText(_translate("window", draw))
+            game_state = end_game_state
+            p1_turn = True
 
     def reset(self):
         ''' Resets the game board '''
