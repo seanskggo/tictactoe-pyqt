@@ -1,10 +1,10 @@
 #################################################################################
 # Tic Tac Toe GUI 
 # Created with PyQT5
-# To run this GUI, ensure all modules in requirements.txt are installed with pip
+# To run this GUI, ensure all modules in requirements.txt are installed
 # For WSL, X11 Display Server needs to be configured with correct display port
 # 
-# Personal Summer Project - 7/12/2020
+# Personal Project - 7/12/2020
 #################################################################################
 
 #################################################################################
@@ -43,17 +43,6 @@ draw = "It's a draw..."
 #################################################################################
 # Classes
 #################################################################################
-
-class images(object):
-    ''' Class for compressing the image files: circle.png and cross.png.
-    This was implemented so that the user can add any image online to 
-    personalise the UI.
-    '''
-    def compress(self, image):
-        ''' Resizes the input image to 83x83 ''' 
-        img = Image.open(image)
-        img = img.resize((83, 83))
-        img.save(image) 
 
 class Ui_window(object):
     def setupUi(self, window):
@@ -97,21 +86,23 @@ class Ui_window(object):
             exec(f"self.pushButton_{index}.setObjectName('pushButton_{index}')")
             exec(f'''self.pushButton_{index}.setGeometry(\
                 QtCore.QRect({temp[0]}, {temp[1]}, {temp[2]}, {temp[3]}))''') 
-        # Creating click conditions had to be done individually since lambda was used
-        # with self -> minimises unexpected behaviour
-        self.pushButton_0.clicked.connect(lambda: self.clicked(0))
-        self.pushButton_1.clicked.connect(lambda: self.clicked(1))
-        self.pushButton_2.clicked.connect(lambda: self.clicked(2))
-        self.pushButton_3.clicked.connect(lambda: self.clicked(3))
-        self.pushButton_4.clicked.connect(lambda: self.clicked(4))
-        self.pushButton_5.clicked.connect(lambda: self.clicked(5))
-        self.pushButton_6.clicked.connect(lambda: self.clicked(6))
-        self.pushButton_7.clicked.connect(lambda: self.clicked(7))
-        self.pushButton_8.clicked.connect(lambda: self.clicked(8))
+        # Creating click conditions had to be done individually due to clicked.connect
+        # behaviour with exec when using lambda and self
+        # for i in range(0, 9):
+        #     eval(f"self.pushButton_{i}").clicked.connect(lambda: self.clicked(i, True))
+        self.pushButton_0.clicked.connect(lambda: self.clicked(0, True))
+        self.pushButton_1.clicked.connect(lambda: self.clicked(1, True))
+        self.pushButton_2.clicked.connect(lambda: self.clicked(2, True))
+        self.pushButton_3.clicked.connect(lambda: self.clicked(3, True))
+        self.pushButton_4.clicked.connect(lambda: self.clicked(4, True))
+        self.pushButton_5.clicked.connect(lambda: self.clicked(5, True))
+        self.pushButton_6.clicked.connect(lambda: self.clicked(6, True))
+        self.pushButton_7.clicked.connect(lambda: self.clicked(7, True))
+        self.pushButton_8.clicked.connect(lambda: self.clicked(8, True))
         self.pushButton_9.clicked.connect(self.reset)
         dim_file.close()
 
-    def clicked(self, index):
+    def clicked(self, index, ai):
         ''' Clicking behaviour of each button. If the button/square was previously
         pressed, then do nothing. Otherwise, display a circle of a cross depending on
         the player turn
@@ -126,6 +117,12 @@ class Ui_window(object):
         game_state[index] = p1_turn
         self.check_outcome()
         p1_turn = True if p1_turn is False else False
+        if ai: 
+            self.AI_turn()
+
+    def AI_turn(self):
+        ''' Generate and play move from tic tac toe AI'''
+        self.clicked(minimax(game_state), False)
 
     def check_outcome(self):
         ''' Check if the game state is drawn or won by a player '''
@@ -133,7 +130,7 @@ class Ui_window(object):
         _translate = QtCore.QCoreApplication.translate
         if game_state.count(None) == 0:
             self.plainTextEdit.setPlainText(_translate("window", draw))
-        # Conditions to determine a win/loss
+        # Conditions to determine a win/loss: hard coding is more concise with 3x3
         condition = [
             (game_state[0], game_state[1], game_state[2]),
             (game_state[3], game_state[4], game_state[5]),
@@ -173,13 +170,17 @@ class Ui_window(object):
         self.pushButton_9.setText(_translate("window", "Reset"))
         self.label.setText(_translate("window", "Game Status"))
         self.plainTextEdit.setPlainText(_translate("window", progress))
-    
-    def show_game_state():
-        ''' Returns the current game state: Used for 
-        sending state to other files 
-        ''' 
-        return game_state
 
+class images(object):
+    ''' Class for compressing the image files: circle.png and cross.png.
+    This was implemented so that the user can add any image online to 
+    personalise the UI.
+    '''
+    def compress(self, image):
+        ''' Resizes the input image to 83x83 ''' 
+        img = Image.open(image)
+        img = img.resize((83, 83))
+        img.save(image) 
 
 #################################################################################
 # Main

@@ -9,11 +9,12 @@
 # Functions
 #################################################################################
 
-def minimax():
-    from tic_tac_toe_gui import Ui_window
+def minimax(game_state):
     ''' utilises the minimax algorithm to find the best move for bot. 
     This function returns the index number of the square to be played
     after calculating the best move
     ''' 
-    game_state = Ui_window.show_game_state()
-    return 42
+    for index, i in enumerate(game_state):
+        if i is None:
+            return index
+    return 0
