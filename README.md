@@ -39,7 +39,12 @@ To change the dimensions of the buttons in the GUI, alter the values in dimensio
 
 ## About the program
 
-![1](https://user-images.githubusercontent.com/65769889/102011853-1535ba80-3d9b-11eb-8bd9-0b815ea3ecf1.PNG)
+The initial game state is an empty 3x3 board. A player can choose to go first by clicking on any of the 9 empty slots or can choose to go second by pressing the 
+"make AI move" button. This will generate an optimum move. If either player manages to form a row, column or diagonal of the same symbol, the player wins the game. Otherwise, if the board is filled and neither have won, the game is drawn.
+
 ![2](https://user-images.githubusercontent.com/65769889/102011883-3e564b00-3d9b-11eb-8526-f83735c1ab96.PNG)
-![4](https://user-images.githubusercontent.com/65769889/102011943-93925c80-3d9b-11eb-8269-00c4ce020944.PNG)
-![5](https://user-images.githubusercontent.com/65769889/102011944-942af300-3d9b-11eb-9b74-9e7332ecdb0c.PNG)
+
+To reset the game at any point in time, press the "reset" button. To make the optimum move at any time, press the "make AI move" button. If you run the program from the command line, a useful metric that shows how many game state possibilities were calculated can be shown per move.
+
+![1](https://user-images.githubusercontent.com/65769889/102011853-1535ba80-3d9b-11eb-8bd9-0b815ea3ecf1.PNG)
+
