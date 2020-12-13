@@ -1,4 +1,4 @@
-# tic_tac_toe_AI
+# Tic Tac Toe AI
 
 Tic Tac Toe game GUI: compete against a perfect AI in a match of Tic Tac Toe.\
 The algorithm uses the minimax algorithm to check all game states before playing optimum moves. \
