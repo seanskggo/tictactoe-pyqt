@@ -12,7 +12,7 @@ To download all the neccessary python packages to execute (or modify) the progra
 
 To run the program, call
 
-``` python tic_tac_toe_gui.py ```
+``` python tic_tac_toe_gui.py ``` or ``` python3 tic_tac_toe_gui.py ```
 
 from the main repository containing the dependent files.
 
