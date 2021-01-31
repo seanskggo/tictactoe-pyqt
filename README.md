@@ -14,7 +14,7 @@ To run the program, call
 
 ``` python tic_tac_toe_gui.py ``` or ``` python3 tic_tac_toe_gui.py ```
 
-from the main repository containing the dependent files.
+from the main repository containing the dependent files. Your server needs to support X11 forwarding. Otherwise, you can install and setup separately.
 
 ## Alternative setup with installer for Windows only
 
