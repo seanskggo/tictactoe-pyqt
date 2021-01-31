@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export LIBGL_ALWAYS_INDIRECT=1
+source virtual/bin/activate
+
+echo "
+Setup complete. If you are on WSL1, then run 
+
+export DISPLAY=:0
+
+Make sure to disable access control on VcXsrv
+"
